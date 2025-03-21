@@ -1,112 +1,80 @@
+import Link from "next/link";
 import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { ArrowRight } from "lucide-react";
+import { Button, Card, Navbar } from "@heroui/react";
 
 export default function Home() {
+  const portfolioItems = [
+    { id: 1, name: "John Doe", image: "/demo.jpg", description: "Portrait and landscape photographer with 5+ years of experience" },
+    { id: 2, name: "Jane Smith", image: "/demo.jpg", description: "Specializing in wedding and event photography" },
+  ];
+
+  const works = [
+    { id: 1, title: "Mountain Sunset", image: "/demo.jpg", photographer: "John Doe" },
+    { id: 2, title: "Beach Wedding", image: "/demo.jpg", photographer: "Jane Smith" },
+    { id: 3, title: "Urban Portrait", image: "/demo.jpg", photographer: "John Doe" },
+    { id: 4, title: "Family Gathering", image: "/demo.jpg", photographer: "Jane Smith" },
+  ];
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/pages/index.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="flex min-h-screen flex-col">
+      <Navbar className="shadow-md p-4 flex justify-between items-center">
+        <Link href="/" className="text-2xl font-bold text-primary">Lanced</Link>
+        <div className="hidden sm:flex gap-6">
+          <Link href="/" className="text-md font-bold text-gray-700 hover:underline underline-offset-8">Home</Link>
+          <Link href="/enquiry" className="text-md font-bold text-gray-700 hover:underline underline-offset-8 bold">Enquiry</Link>
+          <Link href="#works" className="text-md font-bold text-gray-700 hover:underline underline-offset-8 bold">Works</Link>
         </div>
+        <Button as={Link} href="/enquiry" color="primary" className=" font-bold hidden md:flex border-cyan-700 border-2 p-2 hover:bg-cyan-700 hover:text-white rounded-md text-cyan-700 duration-300">
+          Enquire Now <ArrowRight className="h-4 w-4 ml-2" />
+        </Button>
+      </Navbar>
+
+      <main className="flex-1">
+        <section className="h-[70vh] flex items-center justify-center bg-gradient-to-r from-brown-900 to-cyan-700 relative">
+            <div className="relative z-10 text-center text-white flex flex-col items-center" style={{ animation: "slideInRight 0.5s ease-out" }}>
+            <h1 className="text-8xl font-bold">Lanced <br /><span className="text-black">Designs</span></h1>
+            <p className="mt-4 mb-8 font-bold text-xl">Desingning creations that last a lifetime</p>
+            <Button as={Link} href="/enquiry" variant="bordered" size="lg" className="font-bold border-white border-2 p-3 mt-2 rounded-[30%] flex hover:bg-white hover:text-cyan-700 duration-300">
+              Book a Design <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
+          </div>
+        </section>
+
+        <section className="py-16 bg-white">
+          <div className="container mx-auto">
+            <h2 className="text-center text-3xl font-bold text-primary">Our Designers</h2>
+            <div className=" mt-8 flex flex-col md:flex-row justify-center align-center space-around p-12">
+              {portfolioItems.map((item) => (
+                <Card key={item.id} className="w-[60%] hover:w-[62%] m-8 p-6 shadow-sm hover:shadow-cyan-100 shadow-lg rounded-lg duration-300">
+                  <Image src={item.image} alt={item.name} width={400} height={500} className="rounded-md" />
+                  <h3 className="mt-4 text-xl font-semibold text-primary">{item.name}</h3>
+                  <p className="text-gray-600">{item.description}</p>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16 bg-gray-100" id="works">
+          <div className="container mx-auto">
+            <h2 className="text-center text-3xl font-bold text-primary">Review our Works</h2>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4 mt-8">
+              {works.map((work) => (
+                <Card key={work.id} className="shadow-lg p-4 animate-fadeIn"
+                style={{ animation: "floatIn 0.8s ease-out" }}>
+                  <Image src={work.image} alt={work.title} width={400} height={300} className="rounded-md" />
+                  <h3 className="mt-4 text-lg font-semibold">{work.title}</h3>
+                  <p className="text-gray-500">by {work.photographer}</p>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      <footer className="py-6 text-center text-gray-600">
+        © {new Date().getFullYear()} Lanced Photography. All rights reserved.
       </footer>
     </div>
   );
