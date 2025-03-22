@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Button,
   Card,
@@ -15,7 +15,8 @@ import {
   Breadcrumbs,
   BreadcrumbItem,
   Link as NextUILink,
-} from "@heroui/react"
+} from "@heroui/react";
+import { ArrowLeft, LogOut, Mail } from "lucide-react";
 
 // Sample enquiry data
 const initialEnquiries = [
@@ -59,82 +60,75 @@ const initialEnquiries = [
     date: "2023-03-12",
     replied: false,
   },
-]
+];
 
 export default function WorksPage() {
-  const router = useRouter()
-  const [enquiries, setEnquiries] = useState(initialEnquiries)
-  const [replyText, setReplyText] = useState("")
-  const [activeEnquiry, setActiveEnquiry] = useState<number | null>(null)
-  const [isReplying, setIsReplying] = useState(false)
+  const router = useRouter();
+  const [enquiries, setEnquiries] = useState(initialEnquiries);
+  const [replyText, setReplyText] = useState("");
+  const [activeEnquiry, setActiveEnquiry] = useState<number | null>(null);
+  const [isReplying, setIsReplying] = useState(false);
 
   // Check if user is logged in (simple client-side auth for demo)
   useEffect(() => {
     // In a real app, you would check for a token or session
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn")
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
     if (!isLoggedIn) {
-      router.push("/login")
+      router.push("/login");
     } else {
       // Set logged in status for demo purposes
-      sessionStorage.setItem("isLoggedIn", "true")
+      sessionStorage.setItem("isLoggedIn", "true");
     }
-  }, [router])
+  }, [router]);
 
   // Set logged in status for demo purposes
   useEffect(() => {
-    sessionStorage.setItem("isLoggedIn", "true")
-  }, [])
+    sessionStorage.setItem("isLoggedIn", "true");
+  }, []);
 
   const handleLogout = () => {
-    sessionStorage.removeItem("isLoggedIn")
-    router.push("/login")
-  }
+    sessionStorage.removeItem("isLoggedIn");
+    router.push("/login");
+  };
 
   const handleReply = (id: number) => {
-    setActiveEnquiry(id)
-    setReplyText("")
-  }
+    setActiveEnquiry(id);
+    setReplyText("");
+  };
 
   const handleSendReply = () => {
-    if (!activeEnquiry || !replyText.trim()) return
+    if (!activeEnquiry || !replyText.trim()) return;
 
-    setIsReplying(true)
+    setIsReplying(true);
 
     // Simulate sending reply
     setTimeout(() => {
       setEnquiries((prev) =>
-        prev.map((enquiry) => (enquiry.id === activeEnquiry ? { ...enquiry, replied: true } : enquiry)),
-      )
+        prev.map((enquiry) =>
+          enquiry.id === activeEnquiry ? { ...enquiry, replied: true } : enquiry
+        )
+      );
 
-      setActiveEnquiry(null)
-      setReplyText("")
-      setIsReplying(false)
+      setActiveEnquiry(null);
+      setReplyText("");
+      setIsReplying(false);
 
-      alert("Reply sent successfully!")
-    }, 1000)
-  }
+      alert("Reply sent successfully!");
+    }, 1000);
+  };
 
   return (
     <div className="container py-8">
       <div className="mb-8 flex items-center justify-between">
-        <Breadcrumbs>
+        <Breadcrumbs className="mb-8">
           <BreadcrumbItem>
-            <NextUILink as={Link} href="/" color="foreground" className="flex items-center text-sm font-medium">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="mr-2"
-              >
-                <path d="m12 19-7-7 7-7" />
-                <path d="M19 12H5" />
-              </svg>
+            <NextUILink
+              as={Link}
+              href="/"
+              color="foreground"
+              className="flex items-center text-sm font-medium px-8 gap-2 hover:text-cyan-700"
+            >
+              <ArrowLeft />
               Back to Home
             </NextUILink>
           </BreadcrumbItem>
@@ -143,39 +137,30 @@ export default function WorksPage() {
         <Button
           color="primary"
           variant="light"
-          startContent={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" x2="9" y1="12" y2="12" />
-            </svg>
-          }
+          className="flex items-center text-sm font-medium gap-2 hover:text-cyan-700"
           onClick={handleLogout}
         >
+          {" "}
+          <LogOut></LogOut>
           Logout
         </Button>
       </div>
 
-      <div className="mb-8" style={{ animation: "fadeInWithGlow 1s ease-out" }}>
+      <div
+        className="mb-8 p-8"
+        style={{ animation: "fadeInWithGlow 1s ease-out" }}
+      >
         <h1 className="text-3xl font-bold text-primary">Work Enquiries</h1>
-        <p className="text-default-500">Manage and respond to customer enquiries</p>
+        <p className="text-default-500">
+          Manage and respond to customer enquiries
+        </p>
       </div>
 
-      <div className="grid gap-6">
+      <div className="grid gap-6 p-8">
         {enquiries.map((enquiry, index) => (
           <Card
             key={enquiry.id}
-            className={`shadow-md ${enquiry.replied ? "" : "border-primary"}`}
+            className={`${enquiry.replied ? "shadow-md shadow-cyan-500" : "border-primary shadow-sm shadow-orange-500"}`}
             style={{
               animation: `slideInUp ${0.3 + index * 0.15}s ease-out`,
               transform: "translateZ(0)",
@@ -187,34 +172,40 @@ export default function WorksPage() {
               <div>
                 <h3 className="text-xl font-semibold">{enquiry.name}</h3>
                 <div className="flex items-center mt-1 text-default-500">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="mr-1"
-                  >
-                    <rect width="20" height="16" x="2" y="4" rx="2" />
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                  </svg>
+                  <Mail size={12} className="m-1"/>
                   <span>
                     {enquiry.email} • {enquiry.phone}
                   </span>
+                  <Button
+                    color="primary"
+                    variant="bordered"
+                    onClick={() => window.location.href = `mailto:${enquiry.email}`}
+                    className="ml-4 text-cyan-800 border border-cyan-800 rounded-sm p-1 flex hover:text-white hover:bg-cyan-800 duration-300"
+                  >
+                    Send Mail <Mail/>
+                  </Button>
                 </div>
               </div>
               <div className="text-right">
-                <span className="text-sm text-default-500">{new Date(enquiry.date).toLocaleDateString()}</span>
+                <span className="text-sm text-default-500">
+                  {new Date(enquiry.date).toLocaleDateString()}
+                </span>
                 {enquiry.replied ? (
-                  <Chip color="default" variant="flat" size="sm" className="ml-2">
+                  <Chip
+                    color="default"
+                    variant="flat"
+                    size="sm"
+                    className="ml-2"
+                  >
                     Replied
                   </Chip>
                 ) : (
-                  <Chip color="primary" variant="flat" size="sm" className="ml-2 animate-pulse">
+                  <Chip
+                    color="primary"
+                    variant="flat"
+                    size="sm"
+                    className="ml-2 animate-pulse"
+                  >
                     New
                   </Chip>
                 )}
@@ -225,7 +216,10 @@ export default function WorksPage() {
               <p className="whitespace-pre-line">{enquiry.description}</p>
 
               {activeEnquiry === enquiry.id && (
-                <div className="mt-4 space-y-4" style={{ animation: "fadeIn 0.5s ease-out" }}>
+                <div
+                  className="mt-4 space-y-4"
+                  style={{ animation: "fadeIn 0.5s ease-out" }}
+                >
                   <Textarea
                     placeholder="Type your reply here..."
                     minRows={4}
@@ -233,9 +227,15 @@ export default function WorksPage() {
                     onChange={(e) => setReplyText(e.target.value)}
                     variant="bordered"
                     color="primary"
+                    classNames={{input: "p-2"}}
                   />
                   <div className="flex justify-end gap-2">
-                    <Button color="default" variant="light" onClick={() => setActiveEnquiry(null)}>
+                    <Button
+                      color="default"
+                      variant="light"
+                      onClick={() => setActiveEnquiry(null)}
+                      className="flex hover:shadow-lg rounded-sm p-2 duration-300 "                      
+                    >
                       Cancel
                     </Button>
                     <Button
@@ -243,9 +243,9 @@ export default function WorksPage() {
                       onClick={handleSendReply}
                       isDisabled={!replyText.trim() || isReplying}
                       isLoading={isReplying}
-                      endContent={
-                        !isReplying && (
-                          <svg
+                      className="flex hover:shadow-lg rounded-sm p-2 duration-300 "                         
+                    >
+                      <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
                             height="16"
@@ -259,9 +259,6 @@ export default function WorksPage() {
                             <path d="m22 2-7 20-4-9-9-4Z" />
                             <path d="M22 2 11 13" />
                           </svg>
-                        )
-                      }
-                    >
                       {isReplying ? "Sending..." : "Send Reply"}
                     </Button>
                   </div>
@@ -284,6 +281,5 @@ export default function WorksPage() {
         ))}
       </div>
     </div>
-  )
+  );
 }
-

@@ -30,6 +30,7 @@ export default function EnquiryPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+    console.log(name, value);
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -87,6 +88,7 @@ export default function EnquiryPage() {
               >
                 <Input
                   id="name"
+                  name="name"
                   placeholder="Full Name"
                   isRequired
                   value={formData.name}
@@ -98,7 +100,6 @@ export default function EnquiryPage() {
                   }}
                 />
               </div>
-
               <div
                 className="space-y-2"
                 style={{ animation: "slideInRight 0.7s ease-out" }}
@@ -157,7 +158,7 @@ export default function EnquiryPage() {
                   variant="underlined"
                   color="primary"
                   minRows={5}
-                  className="max-w-full h-40"
+                  className="max-w-full h-40 "
                   classNames={{
                     input: "p-2 border-2 border-gray-300 rounded-lg",
                   }}
@@ -171,6 +172,7 @@ export default function EnquiryPage() {
                   isDisabled={isSubmitting}
                   isLoading={isSubmitting}
                   style={{ animation: "pulse 2s infinite" }}
+
                 >
                   {" "}
                   <Send />
